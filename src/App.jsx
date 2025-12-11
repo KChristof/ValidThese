@@ -29,11 +29,13 @@ import {
   BrainCircuit,
   FilePenLine,
   Lightbulb,
-  GraduationCap, // Icône Chapeau de diplômé
-  BookOpen,      // Icône Livre/Thèse
-  Scroll,        // Icône Parchemin/Diplôme
-  School,        // Icône Université
-  FileCheck      // Icône Validation
+  GraduationCap, 
+  BookOpen,      
+  Scroll,        
+  School,        
+  FileCheck,
+  Clock,
+  Zap
 } from 'lucide-react';
 
 // --- FONCTION DE NAVIGATION UNIVERSELLE ---
@@ -59,7 +61,7 @@ const GlobalStyles = () => (
       width: 8px;
     }
     ::-webkit-scrollbar-track {
-      background: #f0fdf4; /* Teinte plus verte/académique */
+      background: #f0fdf4;
     }
     ::-webkit-scrollbar-thumb {
       background: #15803d;
@@ -114,12 +116,314 @@ const Reveal = ({ children, className = "", delay = 0 }) => {
   );
 };
 
+// --- NAVIGATION (RÉINTÉGRÉ) ---
+const Navigation = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const navLinks = [
+    { name: 'Accueil', href: '#home' },
+    { name: 'Le Parcours', href: '#services' },
+    { name: 'Tarifs', href: '#tarifs' },
+    { name: 'Thèses Validées', href: '#portfolio' },
+    { name: 'Outils IA', href: '#ai-tools' },
+  ];
+
+  const handleNavClick = (e, href) => {
+    setIsOpen(false);
+    smoothScrollTo(e, href);
+  };
+
+  return (
+    <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'bg-white/95 backdrop-blur-md shadow-md py-2' : 'bg-white py-4 shadow-sm'}`}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16">
+          <div className="flex-shrink-0 flex items-center cursor-pointer" onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}>
+            {/* LOGO SIMPLIFIÉ THÈSE */}
+            <div className="bg-green-700 p-2 rounded-lg mr-3 shadow-md">
+               <GraduationCap size={28} className="text-white" />
+            </div>
+            <div className="flex flex-col">
+              <span className="font-extrabold text-2xl tracking-tighter leading-none text-slate-900">
+                Valid'<span className="text-green-600">Thèse</span>
+              </span>
+              <span className="text-[10px] font-bold tracking-widest text-gray-500 uppercase">par CEBI Stats</span>
+            </div>
+          </div>
+          
+          <div className="hidden md:flex items-center space-x-8">
+            {navLinks.map((link) => (
+              <a key={link.name} href={link.href} onClick={(e) => handleNavClick(e, link.href)} className="text-sm font-bold uppercase tracking-wider text-gray-700 hover:text-green-600 transition-colors cursor-pointer">
+                {link.name}
+              </a>
+            ))}
+            <a href="#contact" onClick={(e) => smoothScrollTo(e, '#contact')} className="inline-flex items-center justify-center px-5 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-green-700 hover:bg-green-800 shadow-lg hover:shadow-xl hover:scale-105 transition-all">
+              Contact Rapide
+            </a>
+          </div>
+
+          <div className="md:hidden flex items-center">
+            <button onClick={() => setIsOpen(!isOpen)} className="text-gray-600 hover:text-green-700 p-2">
+              {isOpen ? <X size={28} /> : <Menu size={28} />}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {isOpen && (
+        <div className="md:hidden bg-white border-t border-gray-100 shadow-xl absolute w-full top-full left-0 animate-fade-in-down">
+          <div className="px-4 pt-4 pb-6 space-y-2">
+            {navLinks.map((link) => (
+              <a key={link.name} href={link.href} onClick={(e) => handleNavClick(e, link.href)} className="block px-4 py-3 rounded-lg text-base font-medium text-gray-700 hover:text-green-600 hover:bg-green-50 transition-colors">
+                {link.name}
+              </a>
+            ))}
+            <a href="#contact" onClick={(e) => handleNavClick(e, '#contact')} className="block w-full text-center mt-4 px-5 py-3 rounded-xl bg-green-700 text-white font-bold shadow-lg">
+              Me faire aider
+            </a>
+          </div>
+        </div>
+      )}
+    </nav>
+  );
+};
+
+// --- NOUVEAU COMPOSANT : PROFIL EXPERT (CRÉDIBILITÉ) ---
+const ExpertProfile = () => (
+  <section className="py-16 bg-slate-50 border-y border-slate-200">
+    <div className="max-w-5xl mx-auto px-4 flex flex-col md:flex-row items-center gap-12">
+      <div className="w-48 h-48 rounded-full bg-green-200 flex-shrink-0 overflow-hidden border-4 border-white shadow-xl flex items-center justify-center text-4xl">
+        {/* Placeholder avatar */}
+        👨🏾‍💻
+      </div>
+      <div className="text-center md:text-left">
+        <h3 className="text-2xl font-bold text-slate-900 mb-2">Supervisé par Kouadio Christophe KOUAKOU</h3>
+        <div className="flex flex-wrap gap-2 justify-center md:justify-start mb-4">
+          <span className="bg-green-100 text-green-800 text-xs font-bold px-3 py-1 rounded-full border border-green-200">Ingénieur Statisticien</span>
+          <span className="bg-blue-100 text-blue-800 text-xs font-bold px-3 py-1 rounded-full border border-blue-200">Ministère de la Santé (DIS)</span>
+          <span className="bg-purple-100 text-purple-800 text-xs font-bold px-3 py-1 rounded-full border border-purple-200">Infographe</span>
+        </div>
+        <p className="text-gray-600 mb-4 italic text-lg">
+          "Je connais les exigences académiques et les réalités du terrain sanitaire. Mon objectif est de transformer vos mois de collecte de données en une soutenance brillante et sans stress."
+        </p>
+        <div className="flex items-center justify-center md:justify-start text-sm text-gray-500 font-medium">
+          <CheckCircle size={16} className="text-green-600 mr-2" />
+          <span>Plus de 10 ans d'expérience</span>
+        </div>
+      </div>
+    </div>
+  </section>
+);
+
+// --- NOUVEAU COMPOSANT : COMPARISON SLIDER (AVANT/APRÈS) ---
+const ComparisonSlider = () => {
+  const [sliderPosition, setSliderPosition] = useState(50);
+  const isDragging = useRef(false);
+  const containerRef = useRef(null);
+
+  const handleMove = (event) => {
+    if (!isDragging.current || !containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    let clientX = event.touches ? event.touches[0].clientX : event.clientX;
+    const x = Math.max(0, Math.min(clientX - rect.left, rect.width));
+    setSliderPosition(Math.max(0, Math.min((x / rect.width) * 100, 100)));
+  };
+
+  return (
+    <section className="py-20 bg-white overflow-hidden">
+      <div className="max-w-4xl mx-auto px-4">
+        <Reveal>
+          <div className="text-center mb-10">
+            <h2 className="text-sm font-bold text-green-600 uppercase tracking-widest mb-2">Infographie & Design</h2>
+            <h3 className="text-3xl font-bold text-slate-900">La "Touche CEBI" : De l'Excel brut au Slide parfait</h3>
+            <p className="text-gray-500 mt-2">Glissez le curseur pour voir la différence sur une présentation de soutenance.</p>
+          </div>
+          
+          <div 
+            ref={containerRef} 
+            className="relative w-full h-[300px] md:h-[450px] rounded-2xl overflow-hidden cursor-ew-resize shadow-2xl border-4 border-slate-100 select-none group"
+            onMouseDown={() => isDragging.current = true} 
+            onMouseUp={() => isDragging.current = false} 
+            onMouseLeave={() => isDragging.current = false} 
+            onMouseMove={handleMove} 
+            onTouchStart={() => isDragging.current = true} 
+            onTouchEnd={() => isDragging.current = false} 
+            onTouchMove={handleMove}
+          >
+            {/* Image APRES (Fond) */}
+            <div className="absolute inset-0 w-full h-full bg-green-50">
+              <img 
+                src="/slide-apres.png" 
+                alt="Présentation Après Design" 
+                className="object-cover w-full h-full" 
+                draggable="false" 
+                onError={(e) => {
+                  e.target.style.display = 'none';
+                  e.target.parentNode.innerHTML = '<div class="flex items-center justify-center h-full text-green-800 font-bold">Image Après (Ajouter slide-apres.png)</div>';
+                }}
+              />
+              <div className="absolute bottom-4 right-4 bg-green-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg z-10">
+                APRÈS (CEBI)
+              </div>
+            </div>
+
+            {/* Image AVANT (Overlay avec clip-path/width) */}
+            <div 
+              className="absolute inset-0 border-r-4 border-white overflow-hidden bg-slate-100" 
+              style={{ width: `${sliderPosition}%` }}
+            >
+              <div className="relative w-full h-full">
+                <img 
+                  src="/excel-avant.png" 
+                  alt="Tableau Excel Avant" 
+                  className="object-cover w-full h-full max-w-none" 
+                  style={{ width: containerRef.current ? containerRef.current.offsetWidth : '100%' }} 
+                  draggable="false" 
+                  onError={(e) => {
+                    e.target.style.display = 'none';
+                    e.target.parentNode.innerHTML = '<div class="flex items-center justify-center h-full text-slate-500 font-bold">Image Avant (Ajouter excel-avant.png)</div>';
+                  }}
+                />
+                <div className="absolute bottom-4 left-4 bg-slate-700 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">
+                  AVANT (EXCEL)
+                </div>
+              </div>
+            </div>
+
+            {/* Curseur central */}
+            <div 
+              className="absolute top-0 bottom-0 w-1 bg-white cursor-ew-resize shadow-[0_0_10px_rgba(0,0,0,0.5)] z-20" 
+              style={{ left: `${sliderPosition}%` }}
+            >
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-full p-3 shadow-lg hover:scale-110 transition-transform">
+                <Layers size={24} className="text-green-600" />
+              </div>
+            </div>
+          </div>
+        </Reveal>
+      </div>
+    </section>
+  );
+};
+
+// --- NOUVEAU COMPOSANT : PRICING (TARIFS) ---
+const PricingCard = ({ title, price, features, highlighted = false, icon: Icon }) => (
+  <div className={`relative p-8 rounded-2xl flex flex-col h-full transition-transform hover:-translate-y-2 duration-300 ${highlighted ? 'bg-slate-900 text-white shadow-2xl scale-105 z-10' : 'bg-white border border-slate-200 text-slate-900 shadow-lg'}`}>
+    {highlighted && (
+      <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gradient-to-r from-yellow-400 to-orange-500 text-slate-900 text-xs font-bold px-4 py-1 rounded-full shadow-md uppercase tracking-wider">
+        Le plus choisi
+      </div>
+    )}
+    <div className="mb-6">
+      <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 ${highlighted ? 'bg-white/10' : 'bg-green-50'}`}>
+        <Icon size={24} className={highlighted ? 'text-yellow-400' : 'text-green-600'} />
+      </div>
+      <h3 className="text-xl font-bold mb-2">{title}</h3>
+      <div className="flex items-baseline">
+        <span className={`text-3xl font-extrabold ${highlighted ? 'text-white' : 'text-slate-900'}`}>{price}</span>
+      </div>
+    </div>
+    <ul className="space-y-4 mb-8 flex-1">
+      {features.map((feature, idx) => (
+        <li key={idx} className="flex items-start text-sm">
+          <CheckCircle size={16} className={`mr-3 mt-1 flex-shrink-0 ${highlighted ? 'text-green-400' : 'text-green-600'}`} />
+          <span className={highlighted ? 'text-slate-300' : 'text-gray-600'}>{feature}</span>
+        </li>
+      ))}
+    </ul>
+    <a 
+      href="#contact" 
+      onClick={(e) => { e.preventDefault(); document.getElementById('contact').scrollIntoView({behavior: 'smooth'}); }}
+      className={`block w-full text-center py-3 rounded-xl font-bold transition-colors ${highlighted ? 'bg-green-600 hover:bg-green-500 text-white' : 'bg-slate-100 hover:bg-slate-200 text-slate-900'}`}
+    >
+      Demander ce pack
+    </a>
+  </div>
+);
+
+const Pricing = () => {
+  return (
+    <section id="tarifs" className="py-24 bg-slate-50 relative scroll-mt-28">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <Reveal>
+          <div className="text-center mb-16">
+            <h2 className="text-sm font-bold text-green-600 uppercase tracking-widest mb-2">Investissement</h2>
+            <h3 className="text-3xl md:text-4xl font-extrabold text-slate-900">Des tarifs adaptés aux étudiants</h3>
+            <p className="mt-4 text-gray-500 max-w-2xl mx-auto">
+              Nous savons que le budget étudiant est serré. Nos offres sont conçues pour valider votre thèse sans vous ruiner.
+            </p>
+          </div>
+        </Reveal>
+        
+        <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto items-center">
+          <Reveal delay={100}>
+            <PricingCard 
+              title="Pack Essentiel" 
+              price="Sur devis" 
+              icon={BarChart2}
+              features={[
+                "Nettoyage de base de données",
+                "Analyses descriptives simples",
+                "Tableaux & Graphiques (Excel)",
+                "Support par email",
+                "Délai standard (5-7 jours)"
+              ]} 
+            />
+          </Reveal>
+          
+          <Reveal delay={200}>
+            <PricingCard 
+              title="Pack Soutenance" 
+              price="Recommandé" 
+              highlighted={true}
+              icon={Award}
+              features={[
+                "Tout du Pack Essentiel",
+                "Tests statistiques avancés (P-value)",
+                "Rédaction partie Résultats & Discussion",
+                "Mise en forme Word + PPT Soutenance",
+                "Coaching préparation questions jury",
+                "Corrections illimitées"
+              ]} 
+            />
+          </Reveal>
+          
+          <Reveal delay={300}>
+            <PricingCard 
+              title="Urgence 48H" 
+              price="+ Majoration" 
+              icon={Zap}
+              features={[
+                "Traitement prioritaire (Nuit & Week-end)",
+                "Livraison des résultats en 48h chrono",
+                "Contact WhatsApp direct permanent",
+                "Idéal pour les délais dépassés",
+                "Analyse ciblée sur l'essentiel"
+              ]} 
+            />
+          </Reveal>
+        </div>
+      </div>
+    </section>
+  );
+};
+
 // --- NOUVEAU COMPOSANT : COACH THÈSE IA ---
 const ThesisAI = () => {
   const [activeTab, setActiveTab] = useState('discussion'); 
   const [input, setInput] = useState('');
   const [result, setResult] = useState('');
   const [loading, setLoading] = useState(false);
+  
+  // 1. SÉCURITÉ API - MODIFIÉ POUR LA COMPATIBILITÉ
+  // Note: Dans un vrai projet Vite avec fichier .env, utilisez : const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
+  // Ici, nous utilisons une chaîne vide car l'environnement injecte la clé automatiquement.
   const apiKey = ""; 
 
   const handleAISubmit = async (e) => {
@@ -152,7 +456,7 @@ const ThesisAI = () => {
       const text = data.candidates?.[0]?.content?.parts?.[0]?.text || "Erreur lors de l'analyse.";
       setResult(text);
     } catch (error) {
-      setResult("Erreur de connexion à l'IA.");
+      setResult("Erreur de connexion à l'IA ou clé API manquante.");
     } finally {
       setLoading(false);
     }
@@ -261,6 +565,7 @@ const GeminiAssistant = () => {
   const [inputText, setInputText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef(null);
+  // MODIFIÉ POUR COMPATIBILITÉ
   const apiKey = ""; 
 
   const scrollToBottom = () => {
@@ -349,161 +654,6 @@ const GeminiAssistant = () => {
   );
 };
 
-// --- Composants UI Standard ---
-
-const Button = ({ children, variant = 'primary', className = '', href, onClick, ...props }) => {
-  const baseStyle = "inline-flex items-center justify-center px-6 py-3 border text-base font-medium rounded-xl transition-all duration-300 transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-offset-2 cursor-pointer";
-  const variants = {
-    primary: "border-transparent text-white bg-green-700 hover:bg-green-800 focus:ring-green-700 shadow-lg hover:shadow-xl",
-    secondary: "border-transparent text-white bg-orange-500 hover:bg-orange-600 focus:ring-orange-500 shadow-md",
-    outline: "border-green-200 text-green-800 bg-white hover:bg-green-50 focus:ring-green-500"
-  };
-
-  const handleClick = (e) => {
-    if (onClick) onClick(e);
-    if (href && href.startsWith('#')) {
-      smoothScrollTo(e, href);
-    }
-  };
-
-  return (
-    <a 
-      href={href} 
-      onClick={handleClick}
-      className={`${baseStyle} ${variants[variant]} ${className}`} 
-      {...props}
-    >
-      {children}
-    </a>
-  );
-};
-
-// --- MODAL SERVICES ---
-const ServiceModal = ({ service, onClose }) => {
-  if (!service) return null;
-
-  const handleDevisClick = (e) => {
-    onClose(); 
-    setTimeout(() => {
-      const contactSection = document.getElementById('contact');
-      if (contactSection) {
-        contactSection.scrollIntoView({ behavior: 'smooth' });
-      }
-    }, 100);
-  };
-
-  return (
-    <div className="fixed inset-0 z-[100] overflow-y-auto">
-      <div className="flex items-center justify-center min-h-screen px-4 text-center sm:block sm:p-0">
-        <div className="fixed inset-0 bg-slate-900 bg-opacity-80 transition-opacity backdrop-blur-sm" onClick={onClose}></div>
-        <span className="hidden sm:inline-block sm:align-middle sm:h-screen">&#8203;</span>
-        <div className="inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-xl w-full relative animate-fade-in-up">
-          <div className={`bg-gradient-to-r ${service.color} p-6 flex justify-between items-start`}>
-            <div className="flex items-center text-white">
-              <div className="bg-white/20 p-2 rounded-lg mr-4"><service.icon size={24} className="text-white" /></div>
-              <h3 className="text-xl font-bold leading-6">{service.title}</h3>
-            </div>
-            <button onClick={onClose} className="text-white/70 hover:text-white"><XCircle size={28} /></button>
-          </div>
-          <div className="px-6 py-6">
-            <p className="text-gray-500 italic mb-6 text-sm border-l-4 border-green-200 pl-4">"{service.intro}"</p>
-            <div className="space-y-4">
-              <h4 className="font-bold text-slate-900 text-sm uppercase tracking-wide">Ce que nous faisons pour vous</h4>
-              <ul className="space-y-3">
-                {service.details.map((point, idx) => (
-                  <li key={idx} className="flex items-start text-gray-600 text-sm"><CheckSquare size={16} className="mr-3 mt-1 text-green-600 flex-shrink-0" /><span>{point}</span></li>
-                ))}
-              </ul>
-            </div>
-          </div>
-          <div className="bg-gray-50 px-6 py-4 sm:flex sm:flex-row-reverse">
-            <button type="button" className="w-full inline-flex justify-center rounded-xl border border-transparent shadow-sm px-4 py-2 bg-green-700 text-base font-medium text-white hover:bg-green-800 sm:ml-3 sm:w-auto sm:text-sm" onClick={handleDevisClick}>Je veux valider ma thèse</button>
-            <button type="button" className="mt-3 w-full inline-flex justify-center rounded-xl border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm" onClick={onClose}>Fermer</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-// --- NAVIGATION ---
-const Navigation = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const navLinks = [
-    { name: 'Accueil', href: '#home' },
-    { name: 'Le Parcours', href: '#services' },
-    { name: 'Thèses Validées', href: '#portfolio' },
-    { name: 'Outils IA', href: '#ai-tools' },
-    { name: 'FAQ Étudiants', href: '#faq' },
-  ];
-
-  const handleNavClick = (e, href) => {
-    setIsOpen(false);
-    smoothScrollTo(e, href);
-  };
-
-  return (
-    <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'bg-white/95 backdrop-blur-md shadow-md py-2' : 'bg-white py-4 shadow-sm'}`}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          <div className="flex-shrink-0 flex items-center cursor-pointer" onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}>
-            {/* LOGO SIMPLIFIÉ THÈSE */}
-            <div className="bg-green-700 p-2 rounded-lg mr-3 shadow-md">
-               <GraduationCap size={28} className="text-white" />
-            </div>
-            <div className="flex flex-col">
-              <span className="font-extrabold text-2xl tracking-tighter leading-none text-slate-900">
-                Valid'<span className="text-green-600">Thèse</span>
-              </span>
-              <span className="text-[10px] font-bold tracking-widest text-gray-500 uppercase">par CEBI Stats</span>
-            </div>
-          </div>
-          
-          <div className="hidden md:flex items-center space-x-8">
-            {navLinks.map((link) => (
-              <a key={link.name} href={link.href} onClick={(e) => handleNavClick(e, link.href)} className="text-sm font-bold uppercase tracking-wider text-gray-700 hover:text-green-600 transition-colors cursor-pointer">
-                {link.name}
-              </a>
-            ))}
-            <Button variant="primary" href="#contact" className="!px-5 !py-2 !text-sm !rounded-lg hover:scale-105">
-              Contact Rapide
-            </Button>
-          </div>
-
-          <div className="md:hidden flex items-center">
-            <button onClick={() => setIsOpen(!isOpen)} className="text-gray-600 hover:text-green-700 p-2">
-              {isOpen ? <X size={28} /> : <Menu size={28} />}
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {isOpen && (
-        <div className="md:hidden bg-white border-t border-gray-100 shadow-xl absolute w-full top-full left-0 animate-fade-in-down">
-          <div className="px-4 pt-4 pb-6 space-y-2">
-            {navLinks.map((link) => (
-              <a key={link.name} href={link.href} onClick={(e) => handleNavClick(e, link.href)} className="block px-4 py-3 rounded-lg text-base font-medium text-gray-700 hover:text-green-600 hover:bg-green-50 transition-colors">
-                {link.name}
-              </a>
-            ))}
-            <a href="#contact" onClick={(e) => handleNavClick(e, '#contact')} className="block w-full text-center mt-4 px-5 py-3 rounded-xl bg-green-700 text-white font-bold shadow-lg">
-              Me faire aider
-            </a>
-          </div>
-        </div>
-      )}
-    </nav>
-  );
-};
-
 const Hero = () => {
   return (
     <section id="home" className="relative bg-gradient-to-br from-green-50 via-white to-emerald-50 pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden scroll-mt-28">
@@ -536,12 +686,12 @@ const Hero = () => {
             </Reveal>
             <Reveal delay={600}>
               <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                <Button href="#services" variant="primary">
+                <a href="#services" onClick={(e) => smoothScrollTo(e, '#services')} className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-xl text-white bg-green-700 hover:bg-green-800 shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all">
                   Je suis bloqué(e) <ChevronRight size={20} className="ml-2" />
-                </Button>
-                <Button href="#portfolio" variant="outline">
+                </a>
+                <a href="#portfolio" onClick={(e) => smoothScrollTo(e, '#portfolio')} className="inline-flex items-center justify-center px-6 py-3 border border-green-200 text-base font-medium rounded-xl text-green-800 bg-white hover:bg-green-50 focus:ring-green-500 transform hover:-translate-y-1 transition-all">
                   Voir des exemples
-                </Button>
+                </a>
               </div>
             </Reveal>
           </div>
@@ -583,6 +733,90 @@ const ServiceCard = ({ icon: Icon, title, description, color, onClick }) => (
     </button>
   </div>
 );
+
+// --- COMPOSANT MODAL SERVICES (MANQUANT AJOUTÉ) ---
+const ServiceModal = ({ service, onClose }) => {
+  if (!service) return null;
+
+  const handleDevisClick = (e) => {
+    onClose(); 
+    setTimeout(() => {
+      const contactSection = document.getElementById('contact');
+      if (contactSection) {
+        contactSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 100);
+  };
+
+  return (
+    <div className="fixed inset-0 z-[100] overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+      <div className="flex items-center justify-center min-h-screen px-4 text-center sm:block sm:p-0">
+        <div 
+          className="fixed inset-0 bg-slate-900 bg-opacity-80 transition-opacity backdrop-blur-sm" 
+          aria-hidden="true"
+          onClick={onClose}
+        ></div>
+
+        <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+
+        <div className="inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-xl w-full relative animate-fade-in-up">
+          
+          <div className={`bg-gradient-to-r ${service.color} p-6 flex justify-between items-start`}>
+            <div className="flex items-center text-white">
+              <div className="bg-white/20 p-2 rounded-lg mr-4">
+                <service.icon size={24} className="text-white" />
+              </div>
+              <h3 className="text-xl font-bold leading-6" id="modal-title">
+                {service.title}
+              </h3>
+            </div>
+            <button onClick={onClose} className="text-white/70 hover:text-white transition-colors">
+              <XCircle size={28} />
+            </button>
+          </div>
+          
+          <div className="px-6 py-6">
+            <p className="text-gray-500 italic mb-6 text-sm border-l-4 border-blue-100 pl-4">
+              "{service.intro}"
+            </p>
+            
+            <div className="space-y-4">
+              <h4 className="font-bold text-slate-900 text-sm uppercase tracking-wide flex items-center">
+                <Activity size={16} className="mr-2 text-green-500" /> 
+                Notre Offre
+              </h4>
+              <ul className="space-y-3">
+                {service.details.map((point, idx) => (
+                  <li key={idx} className="flex items-start text-gray-600 text-sm leading-relaxed">
+                    <CheckSquare size={16} className="mr-3 mt-1 text-green-500 flex-shrink-0" />
+                    <span>{point}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+          
+          <div className="bg-gray-50 px-6 py-4 sm:flex sm:flex-row-reverse">
+            <button 
+              type="button" 
+              className="w-full inline-flex justify-center rounded-xl border border-transparent shadow-sm px-4 py-2 bg-green-900 text-base font-medium text-white hover:bg-green-800 focus:outline-none sm:ml-3 sm:w-auto sm:text-sm"
+              onClick={handleDevisClick}
+            >
+              Demander un devis
+            </button>
+            <button 
+              type="button" 
+              className="mt-3 w-full inline-flex justify-center rounded-xl border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+              onClick={onClose}
+            >
+              Fermer
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const Services = () => {
   const [selectedService, setSelectedService] = useState(null);
@@ -774,7 +1008,8 @@ const Contact = () => {
     e.preventDefault();
     if (!formData.nom || !formData.message) { alert("⚠️ Merci de remplir votre Nom et Message."); return; }
     const message = encodeURIComponent(`*SOS Thèse - Valid'Thèse*\n👤 Étudiant: ${formData.nom} ${formData.prenom}\n🎓 Diplôme: ${formData.type}\n----------------\n📝 Besoin:\n${formData.message}`);
-    window.open(`https://api.whatsapp.com/send?phone=2250141974132&text=${message}`, '_blank');
+    // 5. CORRECTION WHATSAPP : Utilisation du format wa.me
+    window.open(`https://wa.me/2250141974132?text=${message}`, '_blank');
   };
 
   return (
@@ -841,10 +1076,10 @@ const Footer = () => (
   </footer>
 );
 
+// --- ASSEMBLAGE FINAL DE L'APP ---
 const App = () => {
   useEffect(() => {
     document.title = "Valid'Thèse | Expert Analyse de Données Médicales";
-    // Gestion Favicon (Garde le même pour l'instant)
     let link = document.querySelector("link[rel~='icon']");
     if (!link) {
       link = document.createElement('link');
@@ -859,8 +1094,12 @@ const App = () => {
       <GlobalStyles />
       <Navigation />
       <main>
+        {/* 6. ASSEMBLAGE FINAL SELON ORDRE DEMANDÉ */}
         <Hero />
+        <ExpertProfile />
+        <ComparisonSlider />
         <Services />
+        <Pricing />
         <Portfolio />
         <ThesisAI />
         <FAQ />
