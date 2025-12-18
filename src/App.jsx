@@ -214,7 +214,7 @@ const ExpertProfile = () => (
         </p>
         <div className="flex items-center justify-center md:justify-start text-sm text-gray-500 font-medium">
           <CheckCircle size={16} className="text-green-600 mr-2" />
-          <span>Plus de 10 ans d'expérience</span>
+          <span>Plus de 5 ans d'expérience</span>
         </div>
       </div>
     </div>
