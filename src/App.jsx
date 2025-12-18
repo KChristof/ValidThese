@@ -203,7 +203,7 @@ const ExpertProfile = () => (
         👨🏾‍💻
       </div>
       <div className="text-center md:text-left">
-        <h3 className="text-2xl font-bold text-slate-900 mb-2">Supervisé par Kouadio Christophe KOUAKOU</h3>
+        <h3 className="text-2xl font-bold text-slate-900 mb-2">Supervisé par Christophe KOUAKOU</h3>
         <div className="flex flex-wrap gap-2 justify-center md:justify-start mb-4">
           <span className="bg-green-100 text-green-800 text-xs font-bold px-3 py-1 rounded-full border border-green-200">Ingénieur Statisticien</span>
           <span className="bg-blue-100 text-blue-800 text-xs font-bold px-3 py-1 rounded-full border border-blue-200">Ministère de la Santé (DIS)</span>
@@ -269,7 +269,7 @@ const ComparisonSlider = () => {
                 }}
               />
               <div className="absolute bottom-4 right-4 bg-green-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg z-10">
-                APRÈS (CEBI)
+                APRÈS (CEBI Stats)
               </div>
             </div>
 
@@ -396,12 +396,12 @@ const Pricing = () => {
           
           <Reveal delay={300}>
             <PricingCard 
-              title="Urgence 48H" 
+              title="Urgence 72H" 
               price="+ Majoration" 
               icon={Zap}
               features={[
                 "Traitement prioritaire (Nuit & Week-end)",
-                "Livraison des résultats en 48h chrono",
+                "Livraison des résultats en 72h chrono",
                 "Contact WhatsApp direct permanent",
                 "Idéal pour les délais dépassés",
                 "Analyse ciblée sur l'essentiel"
@@ -679,9 +679,9 @@ const Hero = () => {
             </Reveal>
             <Reveal delay={400}>
               <p className="mt-4 text-lg sm:text-xl text-gray-600 mb-8 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
-                De la conception du protocole à l'analyse des résultats sur SPSS/R.
+                De la conception du protocole à l'analyse des résultats sur SPSS / R / Epi Info.
                 Nous vous accompagnons jusqu'à la validation par votre jury. 
-                <span className="font-bold text-green-700 block mt-2">Plus de 50 thèses accompagnées chaque année.</span>
+                <span className="font-bold text-green-700 block mt-2">Plus de 50 thèses et mémoires accompagnées.</span>
               </p>
             </Reveal>
             <Reveal delay={600}>
@@ -831,7 +831,7 @@ const Services = () => {
       details: [
         "Calcul précis de la taille de l'échantillon (N) selon votre population.",
         "Revue critique de votre fiche d'enquête ou questionnaire.",
-        "Digitalisation du questionnaire sur smartphone (ODK/Kobo) pour gagner du temps.",
+        "Digitalisation du questionnaire sur smartphone (ODKCollect/KoboCollect) pour gagner du temps.",
         "Conseils méthodologiques pour éviter les biais."
       ]
     },
@@ -922,10 +922,10 @@ const ProjectCard = ({ title, category, description, tools }) => (
 
 const Portfolio = () => {
   const projects = [
-    { category: "Thèse Médecine", title: "Cancer du Sein", description: "Facteurs pronostiques et survie à 5 ans au service de Cancérologie.", tools: ["Kaplan-Meier", "Cox"] },
+    { category: "Thèse Médecine", title: "Analyse de survie", description: "Facteurs pronostiques et survie à 5 ans au cancer du sein (CNRAO).", tools: ["Kaplan-Meier", "Cox"] },
     { category: "Thèse Pharmacie", title: "Automédication", description: "Prévalence de l'automédication par antibiotiques dans la commune de Yopougon.", tools: ["Descriptif", "Chi-2"] },
     { category: "DES Pédiatrie", title: "Urgences Chirurgicales", description: "Profil épidémio-clinique des urgences chirurgicales néonatales.", tools: ["Comparaison", "Tableaux"] },
-    { category: "Mémoire Santé Publique", title: "Vaccination COVID-19", description: "Déterminants du refus vaccinal chez le personnel de santé.", tools: ["Régression Logistique"] },
+    { category: "Santé Publique", title: "Vaccination COVID-19", description: "Déterminants du refus vaccinal chez le personnel de santé.", tools: ["Régression Logistique"] },
     { category: "Thèse Odonto", title: "Caries Dentaires", description: "Habitudes alimentaires et incidence des caries en milieu scolaire.", tools: ["Corrélation", "Anova"] },
     { category: "Thèse Médecine", title: "Diabète & Grossesse", description: "Issue de la grossesse chez les femmes diabétiques suivies au CHU.", tools: ["Étude Cas-Témoins"] },
     { category: "Thèse Doctorat", title: "Nuisances Sonores", description: "Impact sur l'audition des travailleurs en zone industrielle.", tools: ["Audiométrie", "Tests T"] },
@@ -938,7 +938,7 @@ const Portfolio = () => {
         <Reveal>
           <div className="text-center mb-12">
             <h2 className="text-sm font-bold text-green-600 uppercase tracking-widest mb-2">Ils ont validé</h2>
-            <h3 className="text-3xl font-extrabold text-slate-900">Exemples de Thèses Accompagnées</h3>
+            <h3 className="text-3xl font-extrabold text-slate-900">Exemples de Thèses et Mémoires Accompagnés</h3>
           </div>
         </Reveal>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -967,7 +967,7 @@ const FAQ = () => {
   const [openIndex, setOpenIndex] = useState(0);
   const faqs = [
     { question: "Je suis nul(le) en statistiques, est-ce grave ?", answer: "Pas du tout ! C'est notre métier. Nous nous occupons de toute la partie technique (calculs, logiciels R/SPSS). Votre rôle sera simplement de comprendre les résultats que nous vous expliquerons clairement pour votre soutenance." },
-    { question: "Combien de temps cela prend-il ?", answer: "Pour une analyse standard (déjà saisie), comptez 3 à 5 jours. Si nous devons créer le masque de saisie ou faire la saisie nous-mêmes, cela dépend du nombre de fiches. Nous savons gérer les urgences de dernière minute !" },
+    { question: "Combien de temps cela prend-il ?", answer: "Pour une analyse standard (déjà saisie), comptez 5 à 7 jours. Si nous devons créer le masque de saisie ou faire la saisie nous-mêmes, cela dépend du nombre de fiches. Nous savons gérer les urgences de dernière minute !" },
     { question: "Que se passe-t-il si le jury demande des corrections ?", answer: "L'accompagnement inclut le service après-vente. Si votre maître de thèse ou le jury demande un tableau supplémentaire ou une correction statistique, nous le faisons sans frais additionnels jusqu'à la validation finale." },
     { question: "Mes données sont-elles confidentielles ?", answer: "Absolument. Vos bases de données ne sont jamais partagées. Une fois la thèse soutenue, nous archivons ou supprimons les données selon votre souhait." }
   ];
