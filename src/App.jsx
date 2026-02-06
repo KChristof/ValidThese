@@ -200,17 +200,17 @@ const ExpertProfile = () => (
     <div className="max-w-5xl mx-auto px-4 flex flex-col md:flex-row items-center gap-12">
       <div className="w-48 h-48 rounded-full bg-green-200 flex-shrink-0 overflow-hidden border-4 border-white shadow-xl flex items-center justify-center text-4xl">
         {/* Placeholder avatar */}
-        👨🏾‍💻
+        <img src="/logo2.png" alt="Logo CEBI Stats" className="w-full h-full object-cover" />
       </div>
       <div className="text-center md:text-left">
-        <h3 className="text-2xl font-bold text-slate-900 mb-2">Supervisé par Kouadio Christophe KOUAKOU</h3>
+        <h3 className="text-2xl font-bold text-slate-900 mb-2">Supervisé par CEBI Stats</h3>
         <div className="flex flex-wrap gap-2 justify-center md:justify-start mb-4">
-          <span className="bg-green-100 text-green-800 text-xs font-bold px-3 py-1 rounded-full border border-green-200">Ingénieur Statisticien</span>
-          <span className="bg-blue-100 text-blue-800 text-xs font-bold px-3 py-1 rounded-full border border-blue-200">Ministère de la Santé (DIS)</span>
-          <span className="bg-purple-100 text-purple-800 text-xs font-bold px-3 py-1 rounded-full border border-purple-200">Infographe</span>
+          <span className="bg-green-100 text-green-800 text-xs font-bold px-3 py-1 rounded-full border border-green-200">Biostatistique</span>
+          <span className="bg-blue-100 text-blue-800 text-xs font-bold px-3 py-1 rounded-full border border-blue-200">Epidémiologie</span>
+          <span className="bg-purple-100 text-purple-800 text-xs font-bold px-3 py-1 rounded-full border border-purple-200">Infographie</span>
         </div>
         <p className="text-gray-600 mb-4 italic text-lg">
-          "Je connais les exigences académiques et les réalités du terrain sanitaire. Mon objectif est de transformer vos mois de collecte de données en une soutenance brillante et sans stress."
+          "Nous connaissons les exigences académiques et les réalités du terrain sanitaire. Notre objectif est de transformer vos mois de collecte de données en une soutenance brillante et sans stress."
         </p>
         <div className="flex items-center justify-center md:justify-start text-sm text-gray-500 font-medium">
           <CheckCircle size={16} className="text-green-600 mr-2" />
@@ -679,7 +679,7 @@ const Hero = () => {
             </Reveal>
             <Reveal delay={400}>
               <p className="mt-4 text-lg sm:text-xl text-gray-600 mb-8 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
-                De la conception du protocole à l'analyse des résultats sur SPSS/R.
+                De la conception du protocole à l'analyse des résultats sur SPSS/R en passant par la collecte de données mobile sur ODK Collect/CSPro/Epi Info.
                 Nous vous accompagnons jusqu'à la validation par votre jury. 
                 <span className="font-bold text-green-700 block mt-2">Plus de 50 thèses accompagnées chaque année.</span>
               </p>
@@ -690,7 +690,7 @@ const Hero = () => {
                   Je suis bloqué(e) <ChevronRight size={20} className="ml-2" />
                 </a>
                 <a href="#portfolio" onClick={(e) => smoothScrollTo(e, '#portfolio')} className="inline-flex items-center justify-center px-6 py-3 border border-green-200 text-base font-medium rounded-xl text-green-800 bg-white hover:bg-green-50 focus:ring-green-500 transform hover:-translate-y-1 transition-all">
-                  Voir des exemples
+                  Les thèses accompagnées
                 </a>
               </div>
             </Reveal>
@@ -710,7 +710,7 @@ const Hero = () => {
                   <p className="text-sm text-gray-500 italic">
                     "Des résultats statistiques clairs sont la clé d'une discussion solide et d'une soutenance réussie."
                   </p>
-                  <p className="text-xs font-bold text-slate-400 mt-4">- Christophe K., Votre Statisticien</p>
+                  <p className="text-xs font-bold text-slate-400 mt-4">- Christophe KOUAKOU, Data Analyst à CEBI Stats</p>
                </div>
             </Reveal>
           </div>
@@ -1086,7 +1086,7 @@ const App = () => {
       link.rel = 'icon';
       document.getElementsByTagName('head')[0].appendChild(link);
     }
-    link.href = "/logo_cebistats.png?v=3"; 
+    link.href = "/logo.png?v=3"; 
   }, []);
 
   return (
