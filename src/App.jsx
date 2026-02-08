@@ -422,9 +422,8 @@ const ThesisAI = () => {
   const [loading, setLoading] = useState(false);
   
   // 1. SÉCURITÉ API - MODIFIÉ POUR LA COMPATIBILITÉ
-  // Note: Dans un vrai projet Vite avec fichier .env, utilisez : const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
-  // Ici, nous utilisons une chaîne vide car l'environnement injecte la clé automatiquement.
-  const apiKey = ""; 
+
+  const apiKey = import.meta.env.VITE_GEMINI_API_KEY; 
 
   const handleAISubmit = async (e) => {
     e.preventDefault();
