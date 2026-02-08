@@ -565,7 +565,7 @@ const GeminiAssistant = () => {
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef(null);
   // MODIFIÉ POUR COMPATIBILITÉ
-  const apiKey = ""; 
+  const apiKey = import.meta.env.VITE_GOOGLE_API_KEY; 
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
