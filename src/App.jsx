@@ -559,7 +559,7 @@ const ThesisAI = () => {
 const GeminiAssistant = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
-    { role: 'assistant', text: "Bonjour Futur Docteur ! Besoin d'aide pour vos statistiques de thèse ? Je suis là." }
+    { role: 'assistant', text: "Bonjour Futur Docteur ! Je suis keycee, l'Assistant IA de Valid'These. Besoin d'aide pour vos statistiques de thèse ? Je suis là." }
   ]);
   const [inputText, setInputText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -585,7 +585,7 @@ const GeminiAssistant = () => {
     setIsLoading(true);
 
     try {
-      const systemPrompt = `Tu es l'assistant de 'Valid'Thèse', le service de CEBI Stats dédié aux étudiants en médecine.
+      const systemPrompt = `Tu es keycee, l'assistant de 'Valid'Thèse', le service de CEBI Stats dédié aux étudiants en médecine.
       Ton but est de rassurer l'étudiant stressé par ses délais.
       Propose de l'aide pour : le calcul de la taille de l'échantillon, la saisie, l'analyse, ou la discussion.
       Sois encourageant.`;
