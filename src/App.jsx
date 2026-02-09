@@ -422,8 +422,8 @@ const ThesisAI = () => {
   const [loading, setLoading] = useState(false);
   
   // 1. SÉCURITÉ API - MODIFIÉ POUR LA COMPATIBILITÉ
-  // Note: Dans un vrai projet Vite avec fichier .env, utilisez : const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
-  const apiKey = import.meta.env.VITE_GOOGLE_API_KEY; 
+  // Note: Dans un vrai projet Vite avec fichier .env, utilisez : const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+  const apiKey = import.meta.env.VITE_GEMINI_API_KEY; 
 
   const handleAISubmit = async (e) => {
     e.preventDefault();
@@ -565,7 +565,7 @@ const GeminiAssistant = () => {
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef(null);
   // MODIFIÉ POUR COMPATIBILITÉ
-  const apiKey = import.meta.env.VITE_GOOGLE_API_KEY; 
+  const apiKey = import.meta.env.VITE_GEMINI_API_KEY; 
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
