@@ -624,7 +624,7 @@ const GeminiAssistant = () => {
       {isOpen && (
         <div className="fixed bottom-24 right-6 z-[60] w-80 bg-white rounded-2xl shadow-2xl border border-gray-100 flex flex-col overflow-hidden animate-fade-in-up max-h-[450px]">
           <div className="bg-green-700 p-4 text-white flex justify-between items-center">
-            <span className="font-bold flex items-center"><GraduationCap size={18} className="mr-2" /> Chat Thèse</span>
+            <span className="font-bold flex items-center"><GraduationCap size={18} className="mr-2" /> keycee </span>
             <button onClick={() => setIsOpen(false)}><X size={18}/></button>
           </div>
           <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-slate-50">
