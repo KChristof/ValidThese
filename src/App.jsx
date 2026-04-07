@@ -71,13 +71,36 @@ const GlobalStyles = () => (
       background: #166534;
     }
     
-    .animate-float {
-      animation: float 8s ease-in-out infinite;
+    html {
+      font-family: 'Inter', sans-serif;
+      font-feature-settings: "cv02", "cv03", "cv04", "cv11";
     }
+    body { font-size: 16px; line-height: 1.6; }
+    h1, h2, h3, h4 { letter-spacing: -0.025em; line-height: 1.2; }
+    p { line-height: 1.75; }
+
+    .animate-float { animation: float 8s ease-in-out infinite; }
+    .animate-float-delayed { animation: float-delayed 10s ease-in-out infinite; }
+    .animate-fade-in-up { animation: fade-in-up 0.35s ease-out forwards; }
+    .animate-fade-in-down { animation: fade-in-down 0.3s ease-out forwards; }
+
     @keyframes float {
       0% { transform: translate(0px, 0px); }
       50% { transform: translate(10px, -20px); }
       100% { transform: translate(0px, 0px); }
+    }
+    @keyframes float-delayed {
+      0% { transform: translate(0px, 0px); }
+      50% { transform: translate(-12px, 14px); }
+      100% { transform: translate(0px, 0px); }
+    }
+    @keyframes fade-in-up {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fade-in-down {
+      from { opacity: 0; transform: translateY(-16px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
   `}</style>
 );
@@ -157,12 +180,21 @@ const Navigation = () => {
             </div>
           </div>
           
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center space-x-6">
             {navLinks.map((link) => (
               <a key={link.name} href={link.href} onClick={(e) => handleNavClick(e, link.href)} className="text-sm font-bold uppercase tracking-wider text-gray-700 hover:text-green-600 transition-colors cursor-pointer">
                 {link.name}
               </a>
             ))}
+            <a
+              href="https://cebistats.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider px-3 py-1.5 rounded-lg border-2 border-slate-300 text-slate-500 hover:border-green-600 hover:text-green-700 transition-all"
+              title="Retour sur le site principal CEBI Stats"
+            >
+              <ExternalLink size={12} /> CEBI Stats
+            </a>
             <a href="#contact" onClick={(e) => smoothScrollTo(e, '#contact')} className="inline-flex items-center justify-center px-5 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-green-700 hover:bg-green-800 shadow-lg hover:shadow-xl hover:scale-105 transition-all">
               Contact Rapide
             </a>
@@ -184,6 +216,14 @@ const Navigation = () => {
                 {link.name}
               </a>
             ))}
+            <a
+              href="https://cebistats.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 px-4 py-3 rounded-lg text-base font-medium text-slate-500 hover:text-green-700 hover:bg-green-50 border border-slate-200 transition-colors"
+            >
+              <ExternalLink size={16} /> CEBI Stats ↗
+            </a>
             <a href="#contact" onClick={(e) => handleNavClick(e, '#contact')} className="block w-full text-center mt-4 px-5 py-3 rounded-xl bg-green-700 text-white font-bold shadow-lg">
               Me faire aider
             </a>
@@ -565,7 +605,7 @@ const GeminiAssistant = () => {
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef(null);
   // MODIFIÉ POUR COMPATIBILITÉ
-  const apiKey = ""; 
+  const apiKey = import.meta.env.VITE_GEMINI_API_KEY; 
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -1061,13 +1101,92 @@ const Contact = () => {
   );
 };
 
+// --- TÉMOIGNAGES ---
+const testimonials = [
+  {
+    name: "Dr. Adjoua K.",
+    role: "Thèse de Médecine — CHU Cocody",
+    text: "J'avais mes données depuis 6 mois mais je ne savais pas comment les analyser. En 4 jours, CEBI Stats m'a fourni des tableaux impeccables et une discussion solide. Mention très honorable !",
+    initials: "AK",
+    color: "bg-green-700",
+  },
+  {
+    name: "Kouamé R.",
+    role: "Thèse de Pharmacie — UFHB",
+    text: "Le logiciel SPSS m'intimidait énormément. L'équipe a tout géré et m'a même expliqué les résultats pour que je puisse répondre aux questions du jury. Je recommande vivement.",
+    initials: "KR",
+    color: "bg-emerald-600",
+  },
+  {
+    name: "Fatoumata D.",
+    role: "DES Pédiatrie — CHU Yopougon",
+    text: "J'étais à J-10 de ma soutenance avec une base de données incomplète. Ils ont travaillé le week-end pour moi. Résultat : soutenu avec félicitations du jury.",
+    initials: "FD",
+    color: "bg-teal-600",
+  },
+  {
+    name: "Dr. Bamba S.",
+    role: "Thèse d'Odontostomatologie",
+    text: "Le PowerPoint de soutenance qu'ils ont créé était vraiment professionnel. Le jury a été impressionné par la qualité des graphiques et la clarté des tableaux.",
+    initials: "BS",
+    color: "bg-green-800",
+  },
+];
+
+const Testimonials = () => (
+  <section className="py-24 bg-white border-t border-slate-100">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <Reveal>
+        <div className="text-center mb-14">
+          <h2 className="text-sm font-bold text-green-600 uppercase tracking-widest mb-2">Témoignages</h2>
+          <h3 className="text-3xl md:text-4xl font-extrabold text-slate-900">Ils ont soutenu avec succès</h3>
+          <p className="mt-4 text-gray-500 max-w-xl mx-auto">Des centaines d'étudiants nous ont fait confiance pour leur thèse. Voici ce qu'ils disent.</p>
+        </div>
+      </Reveal>
+      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {testimonials.map((t, i) => (
+          <Reveal key={i} delay={i * 100}>
+            <div className="bg-slate-50 border border-slate-100 rounded-2xl p-6 flex flex-col h-full shadow-sm hover:shadow-md transition-shadow">
+              <div className="flex items-center gap-3 mb-4">
+                <div className={`w-11 h-11 rounded-full ${t.color} flex items-center justify-center text-white font-extrabold text-sm flex-shrink-0`}>
+                  {t.initials}
+                </div>
+                <div>
+                  <p className="font-bold text-slate-900 text-sm leading-tight">{t.name}</p>
+                  <p className="text-xs text-gray-500">{t.role}</p>
+                </div>
+              </div>
+              <p className="text-gray-600 text-sm leading-relaxed flex-1 italic">"{t.text}"</p>
+              <div className="mt-4 flex gap-0.5">
+                {[...Array(5)].map((_, si) => (
+                  <svg key={si} className="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                  </svg>
+                ))}
+              </div>
+            </div>
+          </Reveal>
+        ))}
+      </div>
+    </div>
+  </section>
+);
+
 const Footer = () => (
   <footer className="bg-slate-950 text-slate-500 py-12 border-t border-slate-900">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="flex flex-col md:flex-row justify-between items-center">
-        <div className="mb-4 md:mb-0">
+      <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+        <div className="text-center md:text-left">
           <span className="font-bold text-white text-lg">Valid'<span className="text-green-600">Thèse</span></span>
           <p className="text-xs mt-1">Une initiative de CEBI Stats - Cabinet d'Études Biostatistique.</p>
+          <a
+            href="https://cebistats.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 mt-3 text-xs font-bold text-green-400 hover:text-green-300 transition-colors"
+          >
+            <ExternalLink size={12} /> Visiter cebistats.com
+          </a>
         </div>
         <p className="text-xs">&copy; {new Date().getFullYear()} CEBI Stats Abidjan. Tous droits réservés.</p>
       </div>
@@ -1101,6 +1220,7 @@ const App = () => {
         <Pricing />
         <Portfolio />
         <ThesisAI />
+        <Testimonials />
         <FAQ />
         <Contact />
       </main>
