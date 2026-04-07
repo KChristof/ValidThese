@@ -76,7 +76,11 @@ const GlobalStyles = () => (
       font-feature-settings: "cv02", "cv03", "cv04", "cv11";
     }
     body { font-size: 16px; line-height: 1.6; }
-    h1, h2, h3, h4 { letter-spacing: -0.025em; line-height: 1.2; }
+    h1, h2, h3, h4 {
+      font-family: 'Playfair Display', Georgia, serif;
+      letter-spacing: -0.01em;
+      line-height: 1.15;
+    }
     p { line-height: 1.75; }
 
     .animate-float { animation: float 8s ease-in-out infinite; }
