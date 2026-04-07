@@ -254,7 +254,7 @@ const ExpertProfile = () => (
         </p>
         <div className="flex items-center justify-center md:justify-start text-sm text-gray-500 font-medium">
           <CheckCircle size={16} className="text-green-600 mr-2" />
-          <span>Plus de 10 ans d'expérience</span>
+          <span>Plus de 5 ans d'expérience</span>
         </div>
       </div>
     </div>
@@ -599,7 +599,7 @@ const ThesisAI = () => {
 const GeminiAssistant = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
-    { role: 'assistant', text: "Bonjour Futur Docteur ! Besoin d'aide pour vos statistiques de thèse ? Je suis là." }
+    { role: 'assistant', text: "Bonjour Futur Docteur ! Je suis keycee, l'Assistant IA de Valid'These. Besoin d'aide pour vos statistiques de thèse ? Je suis là." }
   ]);
   const [inputText, setInputText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -625,7 +625,7 @@ const GeminiAssistant = () => {
     setIsLoading(true);
 
     try {
-      const systemPrompt = `Tu es l'assistant de 'Valid'Thèse', le service de CEBI Stats dédié aux étudiants en médecine.
+      const systemPrompt = `Tu es keycee, l'assistant de 'Valid'Thèse', le service de CEBI Stats dédié aux étudiants en médecine.
       Ton but est de rassurer l'étudiant stressé par ses délais.
       Propose de l'aide pour : le calcul de la taille de l'échantillon, la saisie, l'analyse, ou la discussion.
       Sois encourageant.`;
@@ -664,7 +664,7 @@ const GeminiAssistant = () => {
       {isOpen && (
         <div className="fixed bottom-24 right-6 z-[60] w-80 bg-white rounded-2xl shadow-2xl border border-gray-100 flex flex-col overflow-hidden animate-fade-in-up max-h-[450px]">
           <div className="bg-green-700 p-4 text-white flex justify-between items-center">
-            <span className="font-bold flex items-center"><GraduationCap size={18} className="mr-2" /> Chat Thèse</span>
+            <span className="font-bold flex items-center"><GraduationCap size={18} className="mr-2" /> keycee </span>
             <button onClick={() => setIsOpen(false)}><X size={18}/></button>
           </div>
           <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-slate-50">
