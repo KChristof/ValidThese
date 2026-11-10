@@ -1,0 +1,115 @@
+---
+// Comparaison glissante : base brute à gauche, tableau aux normes à droite (données fictives).
+const raw = [
+  ['001', '19', 'F', '9,8', 'non'],
+  ['002', '24ans', 'f', '11.2', 'Oui'],
+  ['003', '31', 'Féminin', '104', 'oui'],
+  ['003', '31', 'Féminin', '104', 'oui'],
+  ['004', '', 'F', '8,7', 'NON'],
+  ['005', '270', 'F', '10,9', '?'],
+  ['006', '28', 'F', '12,1', 'oui '],
+  ['007', '35', 'F', '9.4', 'Non'],
+];
+const bad: Record<string, number[]> = { '1': [1, 3], '2': [2, 3], '3': [0, 1, 2, 3, 4], '4': [1, 4], '5': [1, 4], '6': [4], '7': [3] };
+const clean = [
+  { v: 'Classe d’âge', head: true },
+  { v: '< 20 ans', n: 38, p: 12.2 },
+  { v: '20 – 34 ans', n: 221, p: 70.8 },
+  { v: '≥ 35 ans', n: 53, p: 17.0 },
+  { v: 'Anémie (Hb < 11 g/dL)', n: 168, p: 53.8 },
+  { v: 'Supplémentation en fer', n: 191, p: 61.2 },
+];
+const pct = (x: number) => x.toFixed(1).replace('.', ',');
+---
+<div class="ba" data-ba style="--pos: 50%">
+  <div class="ba__layer ba__after" aria-label="Après : tableau aux normes">
+    <div class="ba__paper">
+      <p class="ba__cap"><strong>Tableau I</strong> : Caractéristiques des participantes (n = 312)</p>
+      <table class="ba__clean">
+        <thead><tr><th>Variable</th><th>Effectif</th><th>%</th></tr></thead>
+        <tbody>
+          {clean.map((r) => r.head
+            ? <tr class="sub"><td colspan="3">{r.v}</td></tr>
+            : <tr><td>{r.v}</td><td>{r.n}</td><td><span class="bar" style={`--w:${r.p}%`}></span>{pct(r.p!)}</td></tr>)}
+        </tbody>
+      </table>
+      <p class="ba__foot">Âge moyen : 26,4 ± 5,8 ans. Données fictives.</p>
+    </div>
+    <span class="ba__tag ba__tag--after">Après</span>
+  </div>
+
+  <div class="ba__layer ba__before" aria-label="Avant : base Excel brute">
+    <div class="ba__xl">
+      <p class="ba__file">base_these_FINAL_v2.xlsx</p>
+      <table>
+        <thead><tr><th></th><th>N°</th><th>Age</th><th>Sexe</th><th>Hb</th><th>Fer</th></tr></thead>
+        <tbody>
+          {raw.map((r, i) => (
+            <tr><th>{i + 2}</th>{r.map((c, j) => <td class={bad[String(i)]?.includes(j) ? 'bad' : undefined}>{c}</td>)}</tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <span class="ba__tag">Avant</span>
+  </div>
+
+  <div class="ba__handle" aria-hidden="true"><span>⇆</span></div>
+  <label class="visually-hidden" for="ba-range">Faire glisser pour comparer avant et après</label>
+  <input id="ba-range" class="ba__range" type="range" min="0" max="100" value="50" />
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-ba]').forEach((el) => {
+    const input = el.querySelector<HTMLInputElement>('input')!;
+    const set = () => el.style.setProperty('--pos', input.value + '%');
+    input.addEventListener('input', set);
+    set();
+  });
+</script>
+
+<style>
+  .ba { position: relative; height: 430px; border-radius: 8px; overflow: hidden; border: 1px solid var(--line); background: #fff; user-select: none; }
+  .ba__layer { position: absolute; inset: 0; display: grid; place-items: center; padding: 28px; }
+  .ba__before { background: #eef1f3; clip-path: inset(0 calc(100% - var(--pos)) 0 0); }
+  .ba__after { background: var(--teal-50); }
+
+  .ba__xl { background: #fff; border: 1px solid #c9d1d7; width: min(560px, 100%); font: .9rem/1.2 Calibri, 'Segoe UI', Arial, sans-serif; box-shadow: 0 10px 30px -18px rgba(0,0,0,.4); }
+  .ba__file { margin: 0; padding: 7px 10px; background: #1d6f42; color: #fff; font-size: .8rem; }
+  .ba__xl table { width: 100%; border-collapse: collapse; }
+  .ba__xl th, .ba__xl td { border: 1px solid #dde2e6; padding: 6px 8px; text-align: left; white-space: nowrap; }
+  .ba__xl thead th, .ba__xl tbody th { background: #f3f4f6; color: #666; font-weight: 400; font-size: .8rem; }
+  .ba__xl td.bad { background: #fde3e1; color: #a1251b; }
+
+  .ba__paper { background: #fff; padding: 22px 24px 14px; width: min(560px, 100%); font-family: Georgia, 'Times New Roman', serif; color: #1b1b1b; box-shadow: 0 10px 30px -18px rgba(0,0,0,.4); }
+  .ba__cap { margin: 0 0 12px; font-size: .95rem; }
+  .ba__clean { width: 100%; border-collapse: collapse; font-size: .92rem; font-variant-numeric: tabular-nums; }
+  .ba__clean th { text-align: left; padding: 6px 8px; border-top: 1.5px solid #1b1b1b; border-bottom: 1px solid #1b1b1b; }
+  .ba__clean td { padding: 6px 8px; }
+  .ba__clean tbody tr:last-child td { border-bottom: 1.5px solid #1b1b1b; }
+  .ba__clean tr.sub td { font-style: italic; padding-top: 8px; }
+  .ba__clean tr:not(.sub) td:first-child { padding-left: 18px; }
+  .ba__clean td:last-child { width: 38%; white-space: nowrap; }
+  .bar { display: inline-block; vertical-align: middle; height: 8px; width: calc(var(--w) * .7); background: var(--teal); margin-right: 8px; border-radius: 1px; }
+  .ba__foot { font-size: .78rem; color: #666; font-style: italic; margin: 10px 0 0; }
+
+  .ba__tag { position: absolute; top: 14px; left: 14px; font-size: .78rem; font-weight: 700; padding: 4px 10px; border-radius: 3px; background: var(--ink); color: #fff; }
+  .ba__tag--after { left: auto; right: 14px; background: var(--teal-700); }
+
+  .ba__handle { position: absolute; top: 0; bottom: 0; left: var(--pos); width: 2px; margin-left: -1px; background: var(--navy); pointer-events: none; }
+  .ba__handle span { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 40px; height: 40px; border-radius: 50%; background: var(--navy); color: #fff; display: grid; place-items: center; font-size: 1.1rem; box-shadow: 0 4px 12px rgba(0,0,0,.25); }
+  .ba__range { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: ew-resize; -webkit-appearance: none; appearance: none; }
+  .ba__range:focus-visible + * { outline: none; }
+  .ba:has(.ba__range:focus-visible) .ba__handle span { outline: 3px solid var(--teal); outline-offset: 2px; }
+
+  @media (max-width: 560px) {
+    .ba { height: 440px; }
+    .ba__layer { padding: 44px 10px 12px; }
+    .ba__xl { font-size: .74rem; }
+    .ba__xl th, .ba__xl td { padding: 5px 4px; }
+    .ba__paper { padding: 14px 12px 10px; }
+    .ba__clean { font-size: .76rem; }
+    .ba__clean td, .ba__clean th { padding: 5px 4px; }
+    .ba__clean tr:not(.sub) td:first-child { padding-left: 10px; }
+    .bar { display: none; }
+  }
+</style>

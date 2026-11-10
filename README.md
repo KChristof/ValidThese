@@ -1,16 +1,32 @@
-# React + Vite
+# ValidThèse
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Site de [validthese.cebistats.com](https://validthese.cebistats.com), le service de CEBI Stats dédié aux thèses et mémoires en sciences de la santé.
 
-Currently, two official plugins are available:
+Site statique [Astro](https://astro.build), une page, déployé sur Vercel (un push sur `main` part en production).
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Développer
 
-## React Compiler
+```bash
+npm install
+npm run dev      # http://localhost:4321
+npm run build    # génère dist/
+```
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Où modifier quoi
 
-## Expanding the ESLint configuration
+| Contenu | Fichier |
+| --- | --- |
+| Coordonnées, étapes « Où en êtes-vous ? », formules, FAQ, guides | `src/data/site.js` |
+| Mise en page de l'accueil | `src/pages/index.astro` |
+| Tableau commenté de l'accueil | `src/components/HeroTable.astro` |
+| Comparaison avant / après | `src/components/BeforeAfter.astro` |
+| Couleurs et typographie | `src/styles/global.css` |
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Le logo (`public/logo-cb.svg`) est le même que celui de cebistats.com. Après l'avoir modifié, régénérer les PNG avec `node scripts/make-images.mjs` (nécessite `sharp`).
+
+## Règles de contenu
+
+- Aucun nom de personne sur le site : CEBI Stats signe en tant que cabinet.
+- Pas de témoignage, de chiffre ou d'exemple de thèse sans source vérifiable.
+- Pas d'appel à une API d'IA depuis le navigateur : une clé placée dans le code client est lisible par tous.
+- Les tableaux d'exemple utilisent des données fictives et le disent.
