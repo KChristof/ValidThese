@@ -1,0 +1,102 @@
+---
+// Tableau de résultats fictif, commenté ligne par ligne comme on le ferait devant le jury.
+const rows = [
+  { v: 'Âge < 20 ans', n: '38 (12,2)', or: '1,9 [1,1 – 3,4]', p: '0,024' },
+  { v: 'Parité ≥ 3', n: '96 (30,8)', or: '1,4 [0,8 – 2,3]', p: '0,210' },
+  { v: 'Sans supplémentation en fer', n: '121 (38,8)', or: '2,4 [1,5 – 3,9]', p: '< 0,001' },
+  { v: 'Moins de 4 CPN', n: '143 (45,8)', or: '1,7 [1,0 – 2,8]', p: '0,041' },
+];
+const notes = [
+  { row: 2, k: 'Lire un odds ratio ajusté', t: 'À âge, parité et nombre de CPN égaux, les femmes sans supplémentation en fer ont environ 2,4 fois plus de chances d’être anémiées.' },
+  { row: 1, k: 'Lire un intervalle de confiance', t: 'L’intervalle [0,8 – 2,3] contient 1 : l’association n’est pas significative. On ne peut pas conclure à un effet de la parité.' },
+  { row: 0, k: 'Lire une valeur p', t: 'p = 0,024 < 0,05 : l’association est significative. La valeur p ne dit rien de sa force ; c’est l’odds ratio qui la mesure.' },
+];
+---
+<figure class="ht" data-ht data-i="0">
+  <div class="ht__sheet">
+    <figcaption><strong>Tableau III</strong> : Facteurs associés à l’anémie pendant la grossesse (n = 312)</figcaption>
+    <table>
+      <thead><tr><th>Variable</th><th>n (%)</th><th>ORa [IC 95 %]</th><th>p</th></tr></thead>
+      <tbody>
+        {rows.map((r, i) => (
+          <tr data-row={i}><td>{r.v}</td><td>{r.n}</td><td>{r.or}</td><td>{r.p}</td></tr>
+        ))}
+      </tbody>
+    </table>
+    <p class="ht__src">ORa : odds ratio ajusté (régression logistique multivariée). Données fictives.</p>
+  </div>
+
+  <div class="ht__note" aria-live="polite">
+    <p class="ht__label">Ce que vous direz au jury</p>
+    {notes.map((n, i) => (
+      <div class="ht__msg" data-note={i} data-row={n.row} hidden={i !== 0}>
+        <p class="ht__k">{n.k}</p>
+        <p>{n.t}</p>
+      </div>
+    ))}
+    <div class="ht__nav">
+      {notes.map((n, i) => (
+        <button type="button" data-go={i} aria-label={n.k} aria-pressed={i === 0 ? 'true' : 'false'}>{i + 1}</button>
+      ))}
+    </div>
+  </div>
+</figure>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-ht]').forEach((fig) => {
+    const msgs = [...fig.querySelectorAll<HTMLElement>('[data-note]')];
+    const btns = [...fig.querySelectorAll<HTMLButtonElement>('[data-go]')];
+    const rows = [...fig.querySelectorAll<HTMLElement>('tbody tr')];
+    let i = 0;
+    let timer: number | undefined;
+    const show = (k: number) => {
+      i = k;
+      msgs.forEach((m, j) => { m.hidden = j !== k; });
+      btns.forEach((b, j) => b.setAttribute('aria-pressed', String(j === k)));
+      const r = Number(msgs[k].dataset.row);
+      rows.forEach((row, j) => row.classList.toggle('is-on', j === r));
+    };
+    show(0);
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!reduce) timer = window.setInterval(() => show((i + 1) % msgs.length), 6500);
+    btns.forEach((b, j) => b.addEventListener('click', () => { window.clearInterval(timer); show(j); }));
+  });
+</script>
+
+<style>
+  .ht { margin: 0; position: relative; }
+  .ht__sheet {
+    background: #fff; border: 1px solid var(--line); border-radius: 4px; padding: 26px 24px 44px;
+    box-shadow: 0 30px 60px -36px rgba(11, 58, 99, .45);
+    font-family: Georgia, 'Times New Roman', serif; color: #1b1b1b;
+  }
+  figcaption { font-size: .95rem; margin-bottom: 14px; line-height: 1.4; }
+  table { width: 100%; border-collapse: collapse; font-size: .9rem; font-variant-numeric: tabular-nums; }
+  th { text-align: left; font-weight: 700; padding: 7px 8px; border-top: 1.5px solid #1b1b1b; border-bottom: 1px solid #1b1b1b; }
+  td { padding: 8px; border-bottom: 1px solid #eee; transition: background .35s; }
+  tbody tr:last-child td { border-bottom: 1.5px solid #1b1b1b; }
+  th:not(:first-child), td:not(:first-child) { white-space: nowrap; }
+  tr.is-on td { background: #fff4c7; }
+  .ht__src { font-size: .78rem; color: #666; margin: 10px 0 0; font-style: italic; }
+
+  .ht__note {
+    position: relative; margin: -28px -14px 0 auto; width: min(400px, 88%); min-height: 176px;
+    background: var(--navy); color: #d6e3ee; border-radius: 6px; padding: 18px 20px 14px;
+    box-shadow: 0 20px 40px -20px rgba(6, 34, 61, .6);
+  }
+  .ht__label { font-size: .78rem; font-weight: 700; color: #8fd694; margin: 0 0 8px; }
+  .ht__k { font-family: var(--display); font-stretch: 106%; font-weight: 700; color: #fff; font-size: 1.05rem; margin: 0 0 4px; }
+  .ht__msg p:last-child { margin: 0; font-size: .95rem; line-height: 1.5; }
+  .ht__msg:not([hidden]) { animation: fade .45s both; }
+  @keyframes fade { from { opacity: 0; transform: translateY(4px); } }
+  .ht__nav { display: flex; gap: 6px; margin-top: 12px; }
+  .ht__nav button { width: 30px; height: 30px; border-radius: 50%; border: 1px solid rgba(255,255,255,.3); background: none; color: #d6e3ee; font: 600 .85rem var(--sans); cursor: pointer; }
+  .ht__nav button[aria-pressed='true'] { background: #8fd694; border-color: #8fd694; color: var(--navy-900); }
+
+  @media (max-width: 560px) {
+    .ht__sheet { padding: 18px 14px 36px; }
+    table { font-size: .74rem; }
+    th, td { padding: 6px 4px; }
+    .ht__note { width: auto; margin: -22px 10px 0; }
+  }
+</style>

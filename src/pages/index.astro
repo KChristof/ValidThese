@@ -1,0 +1,334 @@
+---
+import Base from '../layouts/Base.astro';
+import HeroTable from '../components/HeroTable.astro';
+import BeforeAfter from '../components/BeforeAfter.astro';
+import { stages, offers, faq, degrees, contact, whatsapp } from '../data/site.js';
+
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+};
+---
+<Base
+  title="ValidThèse | Analyse statistique des thèses en sciences de la santé, Abidjan"
+  description="Accompagnement statistique des thèses de médecine, pharmacie et odontostomatologie : protocole, taille d’échantillon, saisie, analyse SPSS, R ou Stata, préparation de la soutenance. Un service de CEBI Stats à Abidjan."
+  jsonLd={faqLd}
+>
+  <!-- Accueil -->
+  <section class="hero">
+    <div class="wrap hero__grid">
+      <div>
+        <p class="hero__place">Médecine · Pharmacie · Odontostomatologie</p>
+        <h1>Des résultats de thèse que vous saurez défendre.</h1>
+        <p class="hero__lead">
+          Du protocole à la soutenance, nous prenons en charge la partie statistique de votre thèse
+          et nous vous expliquons chaque résultat. Vous restez l’auteur, vous arrivez devant le jury en sachant ce que disent vos chiffres.
+        </p>
+        <div class="btn-row">
+          <a class="btn btn--wa" href={whatsapp()} target="_blank" rel="noopener">Écrire sur WhatsApp</a>
+          <a class="btn btn--line" href="#parcours">Où en êtes-vous ?</a>
+        </div>
+        <p class="hero__note">Premier échange gratuit · devis adapté au budget étudiant · données confidentielles</p>
+      </div>
+      <HeroTable />
+    </div>
+  </section>
+
+  <!-- Où en êtes-vous ? -->
+  <section class="section section--white" id="parcours">
+    <div class="wrap">
+      <div class="head2">
+        <h2>Où en êtes-vous dans votre thèse&nbsp;?</h2>
+        <p class="lead">Nous intervenons à n’importe quelle étape. Choisissez la vôtre pour voir ce que nous faisons.</p>
+      </div>
+      <div class="st" data-st>
+        <div class="st__tabs" role="tablist" aria-label="Étape de votre thèse">
+          {stages.map((s, i) => (
+            <button role="tab" id={`stt-${s.id}`} aria-controls={`st-${s.id}`} aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1}>
+              <span class="st__n">{i + 1}</span>{s.label}
+            </button>
+          ))}
+        </div>
+        {stages.map((s, i) => (
+          <div class="st__panel" role="tabpanel" id={`st-${s.id}`} aria-labelledby={`stt-${s.id}`} hidden={i !== 0}>
+            <div>
+              <h3>{s.title}</h3>
+              <p class="st__text">{s.text}</p>
+              <p class="st__get"><strong>Vous recevez :</strong> {s.get}</p>
+              <a class="btn btn--teal" href={whatsapp(s.msg)} target="_blank" rel="noopener">Demander un devis pour cette étape</a>
+            </div>
+            <ul class="st__do">{s.do.map((d) => <li>{d}</li>)}</ul>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Avant / après -->
+  <section class="section" id="avant-apres">
+    <div class="wrap ba-grid">
+      <div class="ba-grid__txt">
+        <p class="kicker">Avant / après</p>
+        <h2>De la base Excel au tableau du manuscrit</h2>
+        <p class="lead">Âges saisis « 24ans » ou « 270 », doublons, « oui », « Oui » et « OUI » comptés comme trois réponses : une base de thèse arrive rarement propre.</p>
+        <p>Chaque correction est notée dans un journal que vous recevez avec la base. Les tableaux suivent la présentation attendue dans les facultés de santé : titre numéroté, effectifs, pourcentages, une décimale.</p>
+        <p class="ba-grid__hint">Faites glisser le curseur pour comparer.</p>
+      </div>
+      <BeforeAfter />
+    </div>
+  </section>
+
+  <!-- Formules -->
+  <section class="section section--white" id="offres">
+    <div class="wrap">
+      <div class="head2">
+        <h2>Trois formules, un devis sur mesure</h2>
+        <p class="lead">Le tarif dépend du volume de données et des analyses prévues. Décrivez votre sujet, nous vous répondons avec un devis précis.</p>
+      </div>
+      <div class="of">
+        {offers.map((o) => (
+          <article class:list={['of__col', { 'of__col--feat': o.featured }]}>
+            {o.featured && <p class="of__flag">La plus demandée</p>}
+            <h3>{o.name}</h3>
+            <p class="of__price">{o.price}</p>
+            <p class="of__for">{o.for}</p>
+            <ul>{o.items.map((it) => <li>{it}</li>)}</ul>
+            <a class:list={['btn', o.featured ? 'btn--teal' : 'btn--line']} href={whatsapp(`Bonjour ValidThèse, je suis intéressé(e) par la formule « ${o.name} » pour ma thèse.`)} target="_blank" rel="noopener">Demander cette formule</a>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Engagements -->
+  <section class="section section--navy">
+    <div class="wrap eth">
+      <div>
+        <p class="kicker">Nos règles</p>
+        <h2>Votre thèse reste la vôtre</h2>
+        <p class="lead">Un jury repère vite un étudiant qui ne comprend pas ses propres résultats. Notre travail est de vous rendre autonome sur votre analyse, pas de la faire à votre place sans explication.</p>
+      </div>
+      <div class="eth__cols">
+        <div>
+          <h3>Ce que nous faisons</h3>
+          <ul class="eth__yes">
+            <li>Les analyses statistiques, avec la justification de chaque test</li>
+            <li>Une explication de chaque résultat, jusqu’à ce qu’il soit clair pour vous</li>
+            <li>L’aide à la description des résultats dans le manuscrit</li>
+            <li>La relecture méthodologique de votre discussion</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Ce que nous ne faisons pas</h3>
+          <ul class="eth__no">
+            <li>Rédiger votre discussion ou votre conclusion</li>
+            <li>Modifier des données pour obtenir un résultat significatif</li>
+            <li>Promettre une mention : elle dépend de votre travail et du jury</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section" id="questions">
+    <div class="wrap faq-grid">
+      <div>
+        <h2>Questions d’étudiants</h2>
+        <p class="lead">Une autre question&nbsp;? Posez-la sur <a href={whatsapp()} target="_blank" rel="noopener">WhatsApp</a> ou à <a href={`mailto:${contact.email}`}>{contact.email}</a>.</p>
+      </div>
+      <div class="faq">
+        {faq.map((f) => <details><summary>{f.q}</summary><p>{f.a}</p></details>)}
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section class="section section--white" id="contact">
+    <div class="wrap ct">
+      <div>
+        <h2>Votre thèse en quelques lignes</h2>
+        <p class="lead">Votre sujet, l’état de vos données, votre date de soutenance. Nous répondons avec un devis.</p>
+        <dl class="ct__list">
+          <div><dt>WhatsApp</dt><dd><a href={whatsapp()} target="_blank" rel="noopener">{contact.phoneDisplay}</a></dd></div>
+          <div><dt>E-mail</dt><dd><a href={`mailto:${contact.email}`}>{contact.email}</a></dd></div>
+          <div><dt>Ville</dt><dd>{contact.city}</dd></div>
+        </dl>
+      </div>
+      <form class="ct__form" data-form novalidate>
+        <div class="ct__row">
+          <div class="field"><label for="f-nom">Nom et prénom</label><input id="f-nom" name="nom" autocomplete="name" required /></div>
+          <div class="field">
+            <label for="f-type">Diplôme</label>
+            <select id="f-type" name="type">{degrees.map((d) => <option>{d}</option>)}</select>
+          </div>
+        </div>
+        <div class="field">
+          <label for="f-date">Soutenance prévue</label>
+          <select id="f-date" name="date">
+            <option>Pas encore fixée</option>
+            <option>Dans plus de 3 mois</option>
+            <option>Dans 1 à 3 mois</option>
+            <option>Dans moins d’un mois</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="f-msg">Votre sujet et votre besoin</label>
+          <textarea id="f-msg" name="message" required placeholder="Ex. : thèse sur l’anémie chez la femme enceinte, 300 fiches saisies sur Excel, besoin des analyses et des tableaux."></textarea>
+        </div>
+        <p class="ct__err" role="alert" hidden>Indiquez votre nom et votre besoin.</p>
+        <div class="btn-row">
+          <button type="submit" class="btn btn--wa" data-via="wa">Envoyer sur WhatsApp</button>
+          <button type="submit" class="btn btn--line" data-via="mail">Envoyer par e-mail</button>
+        </div>
+        <p class="ct__note">Le formulaire ouvre WhatsApp ou votre messagerie avec votre message pré-rempli. Rien n’est enregistré sur ce site.</p>
+      </form>
+    </div>
+  </section>
+</Base>
+
+<script>
+  // Onglets « Où en êtes-vous ? »
+  const st = document.querySelector<HTMLElement>('[data-st]');
+  if (st) {
+    const tabs = [...st.querySelectorAll<HTMLButtonElement>('[role=tab]')];
+    const pans = [...st.querySelectorAll<HTMLElement>('[role=tabpanel]')];
+    const show = (i: number, focus = false) => {
+      tabs.forEach((t, k) => { t.setAttribute('aria-selected', String(k === i)); t.tabIndex = k === i ? 0 : -1; });
+      pans.forEach((p, k) => { p.hidden = k !== i; });
+      if (focus) tabs[i].focus();
+    };
+    tabs.forEach((t, i) => {
+      t.addEventListener('click', () => show(i));
+      t.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { e.preventDefault(); show((i + 1) % tabs.length, true); }
+        if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); show((i - 1 + tabs.length) % tabs.length, true); }
+      });
+    });
+  }
+
+  // Formulaire : ouvre WhatsApp ou la messagerie, sans rien envoyer à un serveur
+  const form = document.querySelector<HTMLFormElement>('[data-form]');
+  if (form) {
+    const err = form.querySelector<HTMLElement>('.ct__err')!;
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const via = (e.submitter as HTMLButtonElement | null)?.dataset.via ?? 'wa';
+      const d = new FormData(form);
+      const nom = String(d.get('nom') ?? '').trim();
+      const msg = String(d.get('message') ?? '').trim();
+      if (!nom || !msg) { err.hidden = false; return; }
+      err.hidden = true;
+      const body = `Bonjour ValidThèse,\n\nNom : ${nom}\nDiplôme : ${d.get('type')}\nSoutenance : ${d.get('date')}\n\n${msg}`;
+      if (via === 'mail') {
+        location.href = `mailto:contact@cebistats.com?subject=${encodeURIComponent(`Thèse : ${d.get('type')} (${nom})`)}&body=${encodeURIComponent(body)}`;
+      } else {
+        window.open(`https://wa.me/2250152714898?text=${encodeURIComponent(body)}`, '_blank', 'noopener');
+      }
+    });
+  }
+</script>
+
+<style>
+  /* Accueil */
+  .hero { padding: clamp(36px, 6vw, 80px) 0 clamp(56px, 7vw, 96px); position: relative; overflow: hidden; }
+  .hero::before {
+    content: ''; position: absolute; inset: 0; z-index: -1;
+    background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 32px 32px; opacity: .5;
+    mask-image: radial-gradient(ellipse 60% 70% at 80% 50%, #000 15%, transparent 70%);
+  }
+  .hero__grid { display: grid; grid-template-columns: 1fr 1.05fr; gap: clamp(32px, 6vw, 80px); align-items: center; }
+  .hero__place { font-weight: 600; color: var(--teal-700); margin-bottom: 18px; }
+  .hero h1 { max-width: 13ch; }
+  .hero__lead { font-size: 1.16rem; color: var(--muted); max-width: 50ch; margin-bottom: 30px; }
+  .hero__note { margin: 22px 0 0; font-size: .9rem; color: var(--muted); }
+
+  .head2 { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: end; margin-bottom: 40px; }
+  .head2 h2, .head2 .lead { margin: 0; }
+
+  /* Étapes */
+  .st__tabs { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--ink); }
+  .st__tabs button {
+    display: flex; align-items: center; gap: 12px; text-align: left; padding: 20px 16px 20px 0;
+    background: none; border: 0; border-bottom: 1px solid var(--line); cursor: pointer;
+    font: 600 1.05rem/1.25 var(--display); font-stretch: 106%; color: var(--muted); transition: color .2s, box-shadow .2s;
+  }
+  .st__tabs button:hover { color: var(--ink); }
+  .st__tabs button[aria-selected='true'] { color: var(--ink); box-shadow: inset 0 -3px 0 var(--teal); }
+  .st__n { flex: none; width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; border: 1.5px solid currentColor; font-size: .9rem; }
+  .st__tabs button[aria-selected='true'] .st__n { background: var(--teal-700); border-color: var(--teal-700); color: #fff; }
+  .st__panel { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(24px, 5vw, 72px); padding-top: 36px; animation: in .4s both; }
+  .st__panel[hidden] { display: none; }
+  @keyframes in { from { opacity: 0; transform: translateY(8px); } }
+  .st__text { font-size: 1.08rem; }
+  .st__get { color: var(--muted); margin-bottom: 26px; }
+  .st__do { list-style: none; padding: 0; margin: 0; }
+  .st__do li { padding: 14px 0 14px 30px; border-bottom: 1px solid var(--line); position: relative; }
+  .st__do li:first-child { border-top: 1px solid var(--line); }
+  .st__do li::before { content: ''; position: absolute; left: 4px; top: 20px; width: 12px; height: 7px; border-left: 2px solid var(--teal); border-bottom: 2px solid var(--teal); transform: rotate(-45deg); }
+
+  /* Avant / après */
+  .ba-grid { display: grid; grid-template-columns: .85fr 1.15fr; gap: clamp(28px, 5vw, 64px); align-items: center; }
+  .ba-grid__hint { font-size: .9rem; color: var(--muted); font-style: italic; }
+
+  /* Formules */
+  .of { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--line); border-radius: 8px; }
+  .of__col { padding: clamp(24px, 3vw, 36px); display: flex; flex-direction: column; position: relative; }
+  .of__col + .of__col { border-left: 1px solid var(--line); }
+  .of__col--feat { background: var(--navy); color: #c9d8e5; margin: -1px 0; border-radius: 8px; }
+  .of__col--feat + .of__col { border-left: 0; }
+  .of__col--feat h3, .of__col--feat .of__price { color: #fff; }
+  .of__flag { position: absolute; top: -13px; left: clamp(24px, 3vw, 36px); margin: 0; padding: 3px 10px; border-radius: 3px; background: #8fd694; color: var(--navy-900); font-size: .8rem; font-weight: 700; }
+  .of h3 { font-size: 1.5rem; margin-bottom: 4px; }
+  .of__price { font-family: var(--display); font-stretch: 106%; font-weight: 600; color: var(--teal-700); margin-bottom: 10px; }
+  .of__for { font-size: .97rem; color: var(--muted); min-height: 3em; }
+  .of__col--feat .of__for { color: #b7c6d4; }
+  .of ul { list-style: none; padding: 0; margin: 0 0 28px; flex: 1; }
+  .of li { padding: 9px 0 9px 22px; position: relative; font-size: .97rem; border-top: 1px solid var(--line); }
+  .of__col--feat li { border-top-color: rgba(255,255,255,.12); }
+  .of li::before { content: ''; position: absolute; left: 2px; top: 17px; width: 8px; height: 8px; background: var(--teal); }
+  .of__col--feat li::before { background: #8fd694; }
+  .of .btn { align-self: flex-start; }
+
+  /* Engagements */
+  .eth { display: grid; grid-template-columns: 1fr 1.2fr; gap: clamp(32px, 6vw, 80px); align-items: start; }
+  .eth__cols { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+  .eth h3 { font-size: 1.1rem; margin-bottom: 14px; }
+  .eth ul { list-style: none; padding: 0; margin: 0; }
+  .eth li { padding: 12px 0 12px 30px; border-top: 1px solid rgba(255,255,255,.12); position: relative; }
+  .eth li::before { position: absolute; left: 0; top: 11px; font-weight: 700; font-size: 1.05rem; }
+  .eth__yes li::before { content: '✓'; color: #8fd694; }
+  .eth__no li::before { content: '✕'; color: #f39a8f; }
+
+  .faq-grid { display: grid; grid-template-columns: 1fr 1.5fr; gap: clamp(32px, 6vw, 80px); align-items: start; }
+
+  /* Contact */
+  .ct { display: grid; grid-template-columns: 1fr 1.2fr; gap: clamp(32px, 6vw, 80px); align-items: start; }
+  .ct__list { margin: 28px 0 0; display: grid; gap: 0; }
+  .ct__list div { display: grid; grid-template-columns: 110px 1fr; padding: 14px 0; border-top: 1px solid var(--line); }
+  .ct__list dt { font-weight: 600; color: var(--ink); }
+  .ct__list dd { margin: 0; }
+  .ct__form { display: grid; gap: 18px; background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: clamp(20px, 3vw, 32px); }
+  .ct__row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .ct__err { margin: 0; color: #a1251b; font-weight: 600; }
+  .ct__note { margin: 0; font-size: .85rem; color: var(--muted); }
+
+  @media (max-width: 1000px) {
+    .hero__grid, .ba-grid, .eth, .faq-grid, .ct { grid-template-columns: 1fr; }
+    .head2 { grid-template-columns: 1fr; gap: 12px; }
+    .st__tabs { grid-template-columns: 1fr 1fr; }
+    .st__panel { grid-template-columns: 1fr; }
+    .of { grid-template-columns: 1fr; border: 0; gap: 20px; }
+    .of__col { border: 1px solid var(--line) !important; border-radius: 8px; }
+    .of__col--feat { margin: 0; border-color: var(--navy) !important; }
+  }
+  @media (max-width: 560px) {
+    .st__tabs { grid-template-columns: 1fr; }
+    .st__tabs button { padding: 14px 0; }
+    .eth__cols, .ct__row { grid-template-columns: 1fr; }
+    .btn-row .btn { flex: 1 1 100%; }
+    .ct__list div { grid-template-columns: 90px 1fr; }
+  }
+</style>

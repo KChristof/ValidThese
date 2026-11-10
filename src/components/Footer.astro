@@ -1,0 +1,43 @@
+---
+import { contact, whatsapp, guides } from '../data/site.js';
+const year = new Date().getFullYear();
+---
+<footer class="ft">
+  <div class="wrap ft__grid">
+    <div class="ft__brand">
+      <span class="ft__logo"><img src="/logo-cb.svg" alt="" width="34" height="38" /></span>
+      <p><strong>ValidThèse</strong> est le service de <a href={contact.cebistats} target="_blank" rel="noopener">CEBI Stats</a> dédié aux thèses et mémoires en sciences de la santé.</p>
+    </div>
+    <div>
+      <h2>Contact</h2>
+      <ul>
+        <li><a href={whatsapp()} target="_blank" rel="noopener">WhatsApp : {contact.phoneDisplay}</a></li>
+        <li><a href={`mailto:${contact.email}`}>{contact.email}</a></li>
+        <li>{contact.city}</li>
+      </ul>
+    </div>
+    <div>
+      <h2>Guides gratuits</h2>
+      <ul>{guides.map((g) => <li><a href={g.href} target="_blank" rel="noopener">{g.t}</a></li>)}</ul>
+    </div>
+  </div>
+  <div class="wrap ft__legal">
+    <span>© {year} CEBI Stats, Abidjan</span>
+    <span>Exemples de tableaux sur cette page : données fictives</span>
+  </div>
+</footer>
+
+<style>
+  .ft { background: var(--navy-900); color: #a9bccd; padding: 64px 0 28px; font-size: .95rem; }
+  .ft a { color: #dbe7f1; text-decoration: none; }
+  .ft a:hover { color: #fff; text-decoration: underline; }
+  .ft__grid { display: grid; grid-template-columns: 1.3fr 1fr 1.3fr; gap: 40px; }
+  .ft__logo { display: inline-grid; place-items: center; width: 56px; height: 56px; border-radius: 50%; background: #fff; margin-bottom: 16px; }
+  .ft__logo img { width: 30px; height: auto; }
+  .ft__brand p { max-width: 36ch; }
+  .ft__brand strong { color: #fff; }
+  .ft h2 { font-size: .95rem; color: #fff; font-stretch: 104%; margin-bottom: 14px; }
+  .ft ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+  .ft__legal { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px 24px; margin-top: 48px; padding-top: 22px; border-top: 1px solid rgba(255,255,255,.1); font-size: .84rem; color: #7f95a8; }
+  @media (max-width: 860px) { .ft__grid { grid-template-columns: 1fr; gap: 32px; } }
+</style>
